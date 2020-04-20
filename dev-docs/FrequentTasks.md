@@ -163,6 +163,12 @@ done.
   - On the host (mac)
     - cp chef-server/dev/dotfiles/rebar.lock chef-server/src/oc_erchef
   - Repeat the above steps for all the erlang apps.
+    - As of 02/21 these are all of the rebar.lock files that need updating:
+```
+chef-server/src/bookshelf/rebar.lock
+chef-server/src/oc_erchef/rebar.lock
+chef-server/src/oc_bifrost/rebar.lock
+```
 - Updating the erlang deps from the host machine
   - cd chef-server/src/oc_erchef
   - rm -fr \_build
@@ -170,3 +176,9 @@ done.
   - rm -fr \_build # not removing this can cause strange build problems where omnibus builds pick up mac architecture libraries
   - The lockfile will be updated in place. .
   - Repeat above steps for all the erlang apps.
+    - As of 02/21 these are all of the rebar.lock files that need updating:
+```
+chef-server/src/bookshelf/rebar.lock
+chef-server/src/oc_erchef/rebar.lock
+chef-server/src/oc_bifrost/rebar.lock
+```

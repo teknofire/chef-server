@@ -30,38 +30,85 @@ In order to release, you will need the following accounts/permissions:
 ### Informing everyone of a pending release
 
 - [ ] Announce your intention to drive the release to #cft-announce and #chef-server on slack.
+CLARIFICATION from @tas:
+    we can probably move the cft announce to be post promote
+    just copy the discourse post link to that channel to make sure folks see it
+    TODO: get the discourse link he was referring to.
 
 ### Getting the build to be released into current with a minor/major version bump
 
-- Update the version file to the version to be released if minor version needs to be bumped rather than just the patch.
+- Create a new branch from the latest master branch ? <----
+- Update the contents of the file VERSION to the version to be released if minor version needs to be bumped rather than just the patch [what about major version?].
+For updating just the patch verion, [insert 'skip this section, and' ?] refer the the section below on #Preparing for the release
 - Update the release notes with the version, date and context.
-- Run all the tasks for update from FrequentTasks.doc
-- Make sure the omnibus build is into current channel.
+- Update CHANGELOG.md ? <-----
+- Run all the tasks for update from dev-docs/FrequentTasks.md. [i need a walkthrough of this] <-----
+QUESTION: is this just updating ruby Gemfile.lock and erlang rebar.lock files? just delete the locks and regenerate? no updating of particular deps by hand?
+QUESTION: just make a new branch off of master to do this?
+- Make sure the omnibus build is into current channel. [explain?] <-----
   (This is triggered by expeditor once the build and tests in buildkite go through ok once a commit is merged to master)
-- Make sure the habitat builds are passing.
-- For updating just the patch verion refer the the section below on #Preparing for the release
+QUESTION: when/where does the merge to master happen? where is this step?
+One approach is to enter the following into a bash shell, where _version_ is the version number of the new release:
+```
+$ mixlib-install download chef-server -c current -a x86_64 -p ubuntu -l 16.04 -v <version>
+```
+Starting download https://packages.chef.io/files/current/chef-server/14.1.0/ubuntu/16.04/chef-server-core_14.1.0-1_amd64.deb
+- Make sure the habitat builds are passing. [pipeline? and when/where is this build kicked off?] <-----
+Chef / [chef/chef-server:master] habitat/build / master 
+Monitor the chef-server-notify slack channel for current progress ? <-----
+
+QUESTION: at some point @tas ran a build through the Chef / [chef/chef-server:master] omnibus/release pipeline.  where is this step represented?  explain.
+somewhere, insert (where?): The release pipeline runs automatically on merge after expeditor bumps the version...
 
 ### Testing the Release
 
-> This process is currently manual. There is working being done to fold this into a testing pipeline.
+Every merge to chef-server master must be built, and this build (master branch) must be tested with the Umbrella automated integration test pipeline: https://buildkite.com/chef/chef-umbrella-master-chef-server.
+The integration test run for the tag being shipped must be successful.
 
-Every merge to chef-server master is built and this clean build is tested
-with all pedant tests. We only run smoke tests for the FIPS mode. Upgrade
-and addon testing must be done in advance of the release.
+QUESTION: i noticed the last release we ran a FULL Umbrella pipeline test:
+Chef / [chef/umbrella:master] chef-server-full
+https://buildkite.com/chef/chef-umbrella-master-chef-server-full
+do we need to clarify here that the FULL umbrella pipeline needs to be run?
 
-- [ ] Test as per the matrix from: https://docs.google.com/spreadsheets/d/1_gwxdrMnUiV8t2noi8zs1HyGivtIGMEx9KbYriIw7BY/edit#gid=536218507
+Step-by-step:
 
-- [ ] If this release is being made to address a specific
-  high-urgency, high-severity customer issue or security issue, please
-  *specifically* test that the issue in question is fixed.
+- Navigate your web browser to https://buildkite.com/chef/chef-umbrella-master-chef-server
+- Select 'New Build'.
+- Leave 'Branch' set to 'master'.
+- Select 'Options' to expand the 'Environment Variables' field.
+- Enter `UPGRADE_VERSION=<build record>` into the 'Options | Environment Variables' field, where _build record_ is the version number string of the omnibus/adhoc build you wish to test (for example 13.1.64+20201234567890).
+CLARIFICATION: this step should just be performed on master? so delete the previous two 'Options' and 'UPGRADE_VERSION=' steps?
+- Optionally, fill-in the 'Message' field with something descriptive, for example the version number string of the build record.
+- Select 'Create Build'.
 
-If one of these tests has failed, you cannot ship a release until it's fixed.
-Note, no changes other than CHANGELOG/RELEASE_NOTES changes should
-land on master between testing and releasing since we typically tag
-HEAD of master. If something large does land on master, the release
-tag you create should point specifically at the build that you tested.
-The git SHA of the build you are testing can be found in
-`/opt/opscode/version-manifest.json`.
+Currently (02/21), the Umbrella pipeline does not perform a test login to Chef Manage, so this should be done manually by picking a representative Azure scenario and a representative AWS scenario:
+
+- NOTE: NOT SURE IF THESE INSTRUCTIONS ARE CORRECT.
+question: is this a local build or a buildkite build?
+if local, we'll need instructions for that.
+- Ensure that your chosen scenario installs the Chef Manage add-on.  This is normally done by default, but can be explicitly enabled by setting the option `ENABLE_ADDON_CHEF_MANAGE=true`.
+- Obtain the DNS name of the ephemeral machine by observing the output of the boot-up.  A sample output is shown below:
+```
+null_resource.chef_server_config: Provisioning with 'remote-exec'...
+null_resource.chef_server_config (remote-exec): Connecting to remote host via SSH...
+null_resource.chef_server_config (remote-exec):   Host: ec2-34-212-122-231.us-west-2.compute.amazonaws.com
+null_resource.chef_server_config (remote-exec):   User: ec2-user
+null_resource.chef_server_config (remote-exec):   Password: false
+null_resource.chef_server_config (remote-exec):   Private key: false
+null_resource.chef_server_config (remote-exec):   Certificate: false
+null_resource.chef_server_config (remote-exec):   SSH Agent: true
+null_resource.chef_server_config (remote-exec):   Checking Host Key: false
+null_resource.chef_server_config (remote-exec): Connected!
+null_resource.chef_server_config (remote-exec): echo -e '
+null_resource.chef_server_config (remote-exec): BEGIN INSTALL CHEF SERVER
+```
+- Hit the server via `http://<hostname>` where hostname is the DNS name of the emphemeral machine obtained in an earlier step.
+- Enter the username and password to test the login.  The username and password are stored in the following script: https://github.com/chef/chef-server/blob/master/terraform/common/files/add_user.sh.
+Currently (02/21) the username is janedoe and the password is abc123.
+
+[insert necessary (azure?) manual testing instructions here]
+
+Any failures must be fixed before shipping a release, unless they are "known failures" or expected. Note that no changes other than CHANGELOG/RELEASE_NOTES changes should land on master between testing and releasing since we typically tag HEAD of master. If something large does land on master, the release tag you create should point specifically at the build that you tested. The git SHA of the build you are testing can be found in /opt/opscode/version-manifest.json.
 
 ### Preparing for the release
 
@@ -76,7 +123,7 @@ The git SHA of the build you are testing can be found in
 
         /expeditor promote chef/chef-server:master VERSION
 
-  Please do this in the `#chef-server` room. Once this is
+  Please do this in the `#chef-server-notify` room.  Once this is
   done, the release is available to the public via the APT and YUM
   repositories and downloads.chef.io.
 
