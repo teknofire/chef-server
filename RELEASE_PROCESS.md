@@ -41,6 +41,7 @@ CLARIFICATION from @tas:
 - Update the contents of the file VERSION to the version to be released if minor version needs to be bumped rather than just the patch [what about major version?].
 For updating just the patch verion, [insert 'skip this section, and' ?] refer the the section below on #Preparing for the release
 - Update the release notes with the version, date and context.
+QUESTION: here? https://github.com/chef/chef-server/wiki/Pending-Release-Notes
 - Update CHANGELOG.md ? <-----
 - Run all the tasks for update from dev-docs/FrequentTasks.md. [i need a walkthrough of this] <-----
 QUESTION: is this just updating ruby Gemfile.lock and erlang rebar.lock files? just delete the locks and regenerate? no updating of particular deps by hand?
