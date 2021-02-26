@@ -42,7 +42,7 @@ starting and after you complete the updates.
   Due to the rails version, we've locked a lot of dependencies. Make
   sure we can build and run oc-id before merging to master.
   You'll need the libsqlite3-dev library if doing this on Ubuntu
-
+QUESTION: do we, or do we not, update oc-id?
 - src/oc\_erchef/apps/chef_objects/priv/depselector\_rb/Gemfile.lock
 - src/chef-server-ctl/Gemfile.lock
 - src/oc_bifrost/oc-bifrost-pedant/Gemfile.lock
