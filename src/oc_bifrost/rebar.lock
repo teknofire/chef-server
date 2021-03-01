@@ -30,7 +30,7 @@
   0},
  {<<"lager">>,
   {git,"git://github.com/erlang-lager/lager.git",
-       {ref,"8c32954cdb40791047f8f3fb4f77459af0ba573f"}},
+       {ref,"91575d4479c897451edf138c10fa86c3125ec52e"}},
   0},
  {<<"meck">>,
   {git,"git://github.com/eproxus/meck.git",
