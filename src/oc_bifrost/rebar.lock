@@ -7,6 +7,7 @@
   {git,"git://github.com/uwiger/edown.git",
        {ref,"754be25f71a04099c83f3ffdff268e70beeb0021"}},
   0},
+ {<<"fs">>,{pkg,<<"fs">>,<<"6.1.1">>},1},
  {<<"ej">>,
   {git,"git://github.com/chef/ej.git",
        {ref,"85bbf475ec533447d244be50f7f450f41cbc1adf"}},
@@ -75,6 +76,7 @@
   1}]}.
 [
 {pkg_hash,[
+ {<<"fs">>, <<"9D147B944D60CFA48A349F12D06C8EE71128F610C90870BDF9A6773206452ED0">>},
  {<<"goldrush">>, <<"F06E5D5F1277DA5C413E84D5A2924174182FB108DABB39D5EC548B27424CD106">>},
  {<<"recon">>, <<"2F7FCBEC2C35034BADE2F9717F77059DC54EB4E929A3049CA7BA6775C0BD66CD">>}]}
 ].
