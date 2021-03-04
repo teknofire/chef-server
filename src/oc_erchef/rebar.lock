@@ -82,7 +82,7 @@
  {<<"lhttpc">>,{pkg,<<"lhttpc">>,<<"1.6.2">>},1},
  {<<"meck">>,
   {git,"git://github.com/eproxus/meck.git",
-       {ref,"558e925b48ce257b12e381080c851dc49c87d7bb"}},
+       {ref,"06192a984750070ace33b60a492ca27ec9bc6806"}},
   1},
  {<<"mini_s3">>,
   {git,"git://github.com/chef/mini_s3.git",
