@@ -41,11 +41,9 @@ CLARIFICATION from @tas:
 - Update the contents of the file VERSION to the version to be released if minor version needs to be bumped rather than just the patch [what about major version?].
 For updating just the patch verion, [insert 'skip this section, and' ?] refer the the section below on #Preparing for the release
 - Update the release notes with the version, date and context.
-QUESTION: here? https://github.com/chef/chef-server/wiki/Pending-Release-Notes
+  https://github.com/chef/chef-server/wiki/Pending-Release-Notes
 - Update CHANGELOG.md ? <-----
-- Run all the tasks for update from dev-docs/FrequentTasks.md. [i need a walkthrough of this] <-----
-QUESTION: is this just updating ruby Gemfile.lock and erlang rebar.lock files? just delete the locks and regenerate? no updating of particular deps by hand?
-QUESTION: just make a new branch off of master to do this?
+- Run all the tasks for 'Updating Ruby Gems' and 'Updating Erlang Dependencies' from dev-docs/FrequentTasks.md.
 - Make sure the omnibus build is into current channel. [explain?] <-----
   (This is triggered by expeditor once the build and tests in buildkite go through ok once a commit is merged to master)
 QUESTION: when/where does the merge to master happen? where is this step?
@@ -58,8 +56,9 @@ Starting download https://packages.chef.io/files/current/chef-server/14.1.0/ubun
 Chef / [chef/chef-server:master] habitat/build / master 
 Monitor the chef-server-notify slack channel for current progress ? <-----
 
-QUESTION: at some point @tas ran a build through the Chef / [chef/chef-server:master] omnibus/release pipeline.  where is this step represented?  explain.
-somewhere, insert (where?): The release pipeline runs automatically on merge after expeditor bumps the version...
+[insert this info somewhere, if appropriate. these sentences aren't necessary supposed to go together:
+Automatically upon merge, a build is kicked-off on the Chef / [chef/chef-server:master] omnibus/release pipeline.
+The release pipeline runs automatically on merge after expeditor bumps the version...]
 
 ### Testing the Release
 

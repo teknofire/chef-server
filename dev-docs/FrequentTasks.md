@@ -30,19 +30,19 @@ pedant before merge.
 
 ### Overview
 
+For personal sanity, remove all .bundle and vendor directories before
+starting and after you complete the updates. 
+
 The following Gemfile.locks need to be updated to do a complete
 sweep. We strongly recommend using bundler 1.17.x until bundler 2.1 is
 out and stable.
 
-For personal sanity, remove all .bundle and vendor directories before
-starting and after you complete the updates. 
-
 - oc-chef-pedant/Gemfile.lock
 - src/oc-id/Gemfile.lock
-  Due to the rails version, we've locked a lot of dependencies. Make
+  DO NOT update this file unless Rails is upgraded.
+  Due to the Rails version, we've locked a lot of dependencies. Make
   sure we can build and run oc-id before merging to master.
-  You'll need the libsqlite3-dev library if doing this on Ubuntu
-QUESTION: do we, or do we not, update oc-id?
+  You'll need the libsqlite3-dev library if doing this on Ubuntu.
 - src/oc\_erchef/apps/chef_objects/priv/depselector\_rb/Gemfile.lock
 - src/chef-server-ctl/Gemfile.lock
 - src/oc_bifrost/oc-bifrost-pedant/Gemfile.lock
@@ -142,7 +142,7 @@ done.
 - Latest version for rebar3 can be found at: https://www.rebar3.org/
 - Download and update the current rebar3 executable with it.
 
-## Updating the erlang dependencies using rebar3
+## Updating Erlang Dependencies using rebar3
 
 - There are 2 approaches to updating the dependencies
   - From the dev-vm (Preferred method)
@@ -168,6 +168,7 @@ done.
 chef-server/src/bookshelf/rebar.lock
 chef-server/src/oc_erchef/rebar.lock
 chef-server/src/oc_bifrost/rebar.lock
+chef-server/src/oc_erchef/apps/data_collector/rebar.lock
 ```
 - Updating the erlang deps from the host machine
   - cd chef-server/src/oc_erchef
