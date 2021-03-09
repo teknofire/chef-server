@@ -30,10 +30,8 @@ In order to release, you will need the following accounts/permissions:
 ### Informing everyone of a pending release
 
 - [ ] Announce your intention to drive the release to #cft-announce and #chef-server on slack.
-CLARIFICATION from @tas:
-    we can probably move the cft announce to be post promote
-    just copy the discourse post link to that channel to make sure folks see it
-    TODO: get the discourse link he was referring to.
+    - The #cft-announce should be post-promote.
+    - Copying the discourse post link (what link?) to the channels above should suffice.
 
 ### Getting the build to be released into current with a minor/major version bump
 
