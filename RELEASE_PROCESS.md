@@ -29,9 +29,11 @@ In order to release, you will need the following accounts/permissions:
 
 ### Informing everyone of a pending release
 
-- [ ] Announce your intention to drive the release to #cft-announce and #chef-server on slack.
-    - The #cft-announce should be post-promote.
-    - Copying the discourse post link (what link?) to the channels above should suffice.
+- [ ] Announce your intention to for release to the following slack channels.  Copying the discourse post link [what link? where?] to the channels above should suffice:
+    - #cft-announce (post-promote).
+    - #chef-server.
+    - Per @PrajaktaPurohit - Announce the intention for release in #a2-release-coordinate channel. The link to discourse post can be found after release like: https://discourse.chef.io/t/chef-infra-server-14-1-0-released/19616
+    Clarify: Do you mean, after release, link the discourse post in the #a2-release-coordinate channel?
 
 ### Getting the build to be released into current with a minor/major version bump
 
@@ -42,8 +44,8 @@ For updating just the patch verion, [insert 'skip this section, and' ?] refer th
   https://github.com/chef/chef-server/wiki/Pending-Release-Notes
 - Update CHANGELOG.md ? <-----
 - Run all the tasks for 'Updating Ruby Gems' and 'Updating Erlang Dependencies' from dev-docs/FrequentTasks.md.
-- Make sure the omnibus build is into current channel. [explain?] <-----
-  (This is triggered by expeditor once the build and tests in buildkite go through ok once a commit is merged to master)
+- Make sure the omnibus build to be promoted is present in Artifactory's current channel.
+  (This is triggered by expeditor once the build and tests in buildkite go through ok once a commit is merged to master) <- confirm, reword.
 QUESTION: when/where does the merge to master happen? where is this step?
 One approach is to enter the following into a bash shell, where _version_ is the version number of the new release:
 ```
