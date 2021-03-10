@@ -29,7 +29,7 @@ In order to release, you will need the following accounts/permissions:
 
 ### Informing everyone of a pending release
 
-- [ ] Announce your intention to for release to the following slack channels.  Copying the discourse post link [what link? where?] to the channels above should suffice:
+- [ ] Announce your intention to for release to the following slack channels.  Copying the discourse post link [what link? where?] to the channels below should suffice:
     - #cft-announce (post-promote).
     - #chef-server.
     - Per @PrajaktaPurohit - Announce the intention for release in #a2-release-coordinate channel. The link to discourse post can be found after release like: https://discourse.chef.io/t/chef-infra-server-14-1-0-released/19616
@@ -39,7 +39,7 @@ In order to release, you will need the following accounts/permissions:
 
 - Create a new branch from the latest master branch ? <----
 - Update the contents of the file VERSION to the version to be released if minor version needs to be bumped rather than just the patch [what about major version?].
-For updating just the patch verion, [insert 'skip this section, and' ?] refer the the section below on #Preparing for the release
+For updating just the patch verion, [skip this section, and ?] refer the the section below on #Preparing for the release
 - Update the release notes with the version, date and context.
   https://github.com/chef/chef-server/wiki/Pending-Release-Notes
 - Run all the tasks for 'Updating Ruby Gems' and 'Updating Erlang Dependencies' from dev-docs/FrequentTasks.md.
@@ -51,8 +51,8 @@ One approach is to enter the following into a bash shell, where _version_ is the
 $ mixlib-install download chef-server -c current -a x86_64 -p ubuntu -l 16.04 -v <version>
 ```
 Starting download https://packages.chef.io/files/current/chef-server/14.1.0/ubuntu/16.04/chef-server-core_14.1.0-1_amd64.deb
-- Make sure the habitat builds are passing. [pipeline? and when/where is this build kicked off?] <-----
-Chef / [chef/chef-server:master] habitat/build / master 
+- Make sure the habitat builds are passing. [pipeline? label? and when/where is this build kicked off?] <-----
+    Chef / [chef/chef-server:master] habitat/build / master 
 Monitor the chef-server-notify slack channel for current progress ? <-----
 
 [insert this info somewhere, if appropriate. these sentences aren't necessary supposed to go together:
@@ -61,7 +61,7 @@ The release pipeline runs automatically on merge after expeditor bumps the versi
 
 ### Testing the Release
 
-Every merge to chef-server master must be built, and this build (master branch) must be tested with the Umbrella automated integration test pipeline: https://buildkite.com/chef/chef-umbrella-master-chef-server.
+Every merge to chef-server master must be built, and this build (master branch) must be tested with the (full?) Umbrella automated integration test pipeline: https://buildkite.com/chef/chef-umbrella-master-chef-server.
 The integration test run for the tag being shipped must be successful.
 
 QUESTION: i noticed the last release we ran a FULL Umbrella pipeline test:
