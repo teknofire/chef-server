@@ -33,7 +33,7 @@ In order to release, you will need the following accounts/permissions:
     - #cft-announce (post-promote).
     - #chef-server.
     - Per @PrajaktaPurohit - Announce the intention for release in #a2-release-coordinate channel. The link to discourse post can be found after release like: https://discourse.chef.io/t/chef-infra-server-14-1-0-released/19616
-    Clarify: Do you mean, after release, link the discourse post in the #a2-release-coordinate channel?
+    Clarify: Do you mean... after the release, link the discourse post in the #a2-release-coordinate channel?
 
 ### Getting the build to be released into current with a minor/major version bump
 
@@ -42,7 +42,6 @@ In order to release, you will need the following accounts/permissions:
 For updating just the patch verion, [insert 'skip this section, and' ?] refer the the section below on #Preparing for the release
 - Update the release notes with the version, date and context.
   https://github.com/chef/chef-server/wiki/Pending-Release-Notes
-- Update CHANGELOG.md ? <-----
 - Run all the tasks for 'Updating Ruby Gems' and 'Updating Erlang Dependencies' from dev-docs/FrequentTasks.md.
 - Make sure the omnibus build to be promoted is present in Artifactory's current channel.
   (This is triggered by expeditor once the build and tests in buildkite go through ok once a commit is merged to master) <- confirm, reword.
@@ -123,7 +122,7 @@ Any failures must be fixed before shipping a release, unless they are "known fai
 
         /expeditor promote chef/chef-server:master VERSION
 
-  Please do this in the `#chef-server-notify` room.  Once this is
+  Please do this in the `#chef-server-notify` channel.  Once this is
   done, the release is available to the public via the APT and YUM
   repositories and downloads.chef.io.
 
