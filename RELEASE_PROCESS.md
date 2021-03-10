@@ -61,13 +61,8 @@ The release pipeline runs automatically on merge after expeditor bumps the versi
 
 ### Testing the Release
 
-Every merge to chef-server master must be built, and this build (master branch) must be tested with the (full?) Umbrella automated integration test pipeline: https://buildkite.com/chef/chef-umbrella-master-chef-server.
+Every merge to chef-server master must be built, and this build (master branch?) must be tested with the full Umbrella automated integration test pipeline: https://buildkite.com/chef/chef-umbrella-master-chef-server-full.
 The integration test run for the tag being shipped must be successful.
-
-QUESTION: i noticed the last release we ran a FULL Umbrella pipeline test:
-Chef / [chef/umbrella:master] chef-server-full
-https://buildkite.com/chef/chef-umbrella-master-chef-server-full
-do we need to clarify here that the FULL umbrella pipeline needs to be run?
 
 Step-by-step:
 
@@ -80,12 +75,12 @@ CLARIFICATION: this step should just be performed on master? so delete the previ
 - Optionally, fill-in the 'Message' field with something descriptive, for example the version number string of the build record.
 - Select 'Create Build'.
 
-Currently (02/21), the Umbrella pipeline does not perform a test login to Chef Manage, so this should be done manually by picking a representative Azure scenario and a representative AWS scenario:
+Currently (02/21), the Umbrella pipeline does not perform a test login to Chef Manage, so this should be done manually by picking a representative AWS scenario and a representative Azure scenario:
 
 - NOTE: NOT SURE IF THESE INSTRUCTIONS ARE CORRECT.
-question: is this a local build or a buildkite build?
+question: is this done locally or in the cloud?
 if local, we'll need instructions for that.
-- Ensure that your chosen scenario installs the Chef Manage add-on.  This is normally done by default, but can be explicitly enabled by setting the option `ENABLE_ADDON_CHEF_MANAGE=true`.
+
 - Obtain the DNS name of the ephemeral machine by observing the output of the boot-up.  A sample output is shown below:
 ```
 null_resource.chef_server_config: Provisioning with 'remote-exec'...
@@ -101,7 +96,7 @@ null_resource.chef_server_config (remote-exec): Connected!
 null_resource.chef_server_config (remote-exec): echo -e '
 null_resource.chef_server_config (remote-exec): BEGIN INSTALL CHEF SERVER
 ```
-- Hit the server via `http://<hostname>` where hostname is the DNS name of the emphemeral machine obtained in an earlier step.
+- Hit the server via `http://<hostname>` where hostname is the DNS name of the emphemeral machine obtained in the previous step.
 - Enter the username and password to test the login.  The username and password are stored in the following script: https://github.com/chef/chef-server/blob/master/terraform/common/files/add_user.sh.
 Currently (02/21) the username is janedoe and the password is abc123.
 
@@ -109,7 +104,7 @@ Currently (02/21) the username is janedoe and the password is abc123.
 
 Any failures must be fixed before shipping a release, unless they are "known failures" or expected. Note that no changes other than CHANGELOG/RELEASE_NOTES changes should land on master between testing and releasing since we typically tag HEAD of master. If something large does land on master, the release tag you create should point specifically at the build that you tested. The git SHA of the build you are testing can be found in /opt/opscode/version-manifest.json.
 
-### Preparing for the release
+### Preparing for the Release
 
 - [ ] Check RELEASE_NOTES.md to ensure that it describes the
   most important user-facing changes in the release. This file should
