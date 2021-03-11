@@ -28,11 +28,19 @@ pedant before merge.
 
 ## Updating Ruby Gems via Dependabot (automated)
 
+The following is currently aspirational. This process does not currently
+replace updating Gems by hand, at least completely.
+
 INSERT description/summary of what dependabot is/does.
 Opens PRs for updating Ruby gems. Blah blah...
 
+insert something about looking at the title of the pr to get the thing that is updated, then look on the list
+1) if its verify, just make sure it passes, then can merge
+2) if adhoc, run through adhoc tests, make sure passes verify and adhoc
+
 shepharding/guiding/supervising
 
+We currently think this is correct (speculative):
 All the Gemfile.lock updates other than omnibus/Gemfile.lock,
 chef-server-ctl/Gemfile.lock and oc-chef-pedant/Gemfile.lock can
 be verified in the verify pipeline. Those are the only 3 that should
@@ -44,6 +52,7 @@ pipeline.
 The verify pipeline builds are kicked-off automatically by dependabot, but it
 is necessary to verify that they pass.
 
+
 Updates needing verify + adhoc builds:
 - omnibus/Gemfile.lock
 - oc-chef-pedant/Gemfile.lock
@@ -51,12 +60,9 @@ Updates needing verify + adhoc builds:
 
 Updates needing verify builds only:
 Anything else, for example...
-- src/oc-id/Gemfile.lock (ONLY IF RAILS IS UPGRADED. See [insert])
+- src/oc-id/Gemfile.lock (ONLY IF RAILS IS UPGRADED. Need to  check if manage works. See [insert])
 - src/oc\_erchef/apps/chef_objects/priv/depselector\_rb/Gemfile.lock
 - src/oc_bifrost/oc-bifrost-pedant/Gemfile.lock
-
-Apparently this is currently aspirational. This process does not currently
-replace doing it by hand, at least completely.
 
 ## Updating Ruby Gems by Hand
 
@@ -69,6 +75,7 @@ The following Gemfile.locks need to be updated to do a complete
 sweep. We strongly recommend using bundler 1.17.x until bundler 2.1 is
 out and stable.
 
+- omnibus/Gemfile.lock
 - oc-chef-pedant/Gemfile.lock
 - src/oc-id/Gemfile.lock
   DO NOT update this file unless Rails is upgraded.
