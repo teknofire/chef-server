@@ -35,8 +35,9 @@ INSERT description/summary of what dependabot is/does.
 Opens PRs for updating Ruby gems. Blah blah...
 
 insert something about looking at the title of the pr to get the thing that is updated, then look on the list
-1) if its verify, just make sure it passes, then can merge
-2) if adhoc, run through adhoc tests, make sure passes verify and adhoc
+1) if it's listed under verify, just make sure it passes, then can merge
+2) if it's listed under adhoc, run through adhoc tests, make sure passes verify and adhoc
+3) if anything fails, throw the card back into 
 
 shepharding/guiding/supervising
 
