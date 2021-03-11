@@ -26,7 +26,39 @@ pedant before merge.
   aware that this can change, and perhaps consider using core/rubyXX
   instead.
 
-## Updating Ruby Gems
+## Updating Ruby Gems via Dependabot (automated)
+
+INSERT description/summary of what dependabot is/does.
+Opens PRs for updating Ruby gems. Blah blah...
+
+shepharding/guiding/supervising
+
+All the Gemfile.lock updates other than omnibus/Gemfile.lock,
+chef-server-ctl/Gemfile.lock and oc-chef-pedant/Gemfile.lock can
+be verified in the verify pipeline. Those are the only 3 that should
+need the adhoc builds.
+https://github.com/chef/chef-server/blob/master/.expeditor/verify.pipeline.yml
+would be the place to make sure the test in question is being run in the verify
+pipeline.
+
+The verify pipeline builds are kicked-off automatically by dependabot, but it
+is necessary to verify that they pass.
+
+Updates needing verify + adhoc builds:
+- omnibus/Gemfile.lock
+- oc-chef-pedant/Gemfile.lock
+- src/chef-server-ctl/Gemfile.lock
+
+Updates needing verify builds only:
+Anything else, for example...
+- src/oc-id/Gemfile.lock (ONLY IF RAILS IS UPGRADED. See [insert])
+- src/oc\_erchef/apps/chef_objects/priv/depselector\_rb/Gemfile.lock
+- src/oc_bifrost/oc-bifrost-pedant/Gemfile.lock
+
+Apparently this is currently aspirational. This process does not currently
+replace doing it by hand, at least completely.
+
+## Updating Ruby Gems by Hand
 
 ### Overview
 
