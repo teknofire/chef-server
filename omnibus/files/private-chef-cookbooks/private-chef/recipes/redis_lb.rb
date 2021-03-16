@@ -111,14 +111,18 @@ ruby_block 'set_lb_redis_values' do
                       port: redis_data['port'],
                       password: PrivateChef.credentials.get('redis_lb', 'password'))
     xdl = node['private_chef']['lb']['xdl_defaults']
+    xmaint_whitelisted_ip = node['private_chef']['lb']['xmaint_whitelisted_ip']
     banned_ips = PrivateChef['banned_ips']
     maint_mode_ips = PrivateChef['maint_mode_whitelist_ips']
     # Ensure there is no stale data, but first institute
     # a brief maint mode to avoid potential misrouting when
     # we delete old keys.
     redis.hset 'dl_default', '503_mode', true
-    next until redis.spop('banned_ips').nil?
-    next until redis.spop('maint_data').nil?
+    ## the following can be removed as the data is not used and if used it will not be fetched in realtime
+    ## but cached in lua shared memory every interval set in ['private_chef']['lb']['maint_refresh_interval'] an ['ban_refresh_interval']
+#     next until redis.spop('banned_ips').nil?
+#     next until redis.spop('maint_data').nil?
+    next until redis.spop('maint_whitelisted_ip').nil?
     keys = redis.hkeys 'dl_default'
 
     # Clear all dl_default keys except for the 503 mode we just set.
@@ -130,14 +134,19 @@ ruby_block 'set_lb_redis_values' do
 
     redis.pipelined do
       # Now we're clear to repopulate from configuration.
-      unless banned_ips.nil?
-        banned_ips.each do |ip|
-          redis.sadd   'banned_ips', ip
-        end
-      end
-      unless maint_mode_ips.nil?
-        maint_mode_ips.each do |ip|
-          redis.sadd   'maint_data', ip
+#       unless banned_ips.nil?
+#         banned_ips.each do |ip|
+#           redis.sadd   'banned_ips', ip
+#         end
+#       end
+#       unless maint_mode_ips.nil?
+#         maint_mode_ips.each do |ip|
+#           redis.sadd   'maint_data', ip
+#         end
+#       end
+      unless xmaint_whitelisted_ip.nil?
+        xmaint_whitelisted_ip.each do |ip|
+          redis.sadd   'maint_whitelisted_ip', ip
         end
       end
       # Note that we'll preserve 503 mode until everything is
