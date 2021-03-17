@@ -27,41 +27,48 @@ In order to release, you will need the following accounts/permissions:
 
 ## THE PROCESS
 
-### Informing everyone of a pending release
-
-- [ ] Announce your intention to for release to the following slack channels.  Copying the discourse post link [what link? where?] to the channels below should suffice:
-    - #cft-announce (post-promote).
-    - #chef-server.
-    - Per @PrajaktaPurohit - Announce the intention for release in #a2-release-coordinate channel. The link to discourse post can be found after release like: https://discourse.chef.io/t/chef-infra-server-14-1-0-released/19616
-    Clarify: Do you mean... after the release, link the discourse post in the #a2-release-coordinate channel?
+@Prajakta Purohit
+    the first thing to do would be make sure you have the umbrella pipelines running
+    10:21
+    we already have 14.1.0 -> 14.2.2
+    10:22
+    I think you need to run 14.0.65 -> 14.2.2
+    10:22
+    in the full pipeline.
+    10:22
+    and test manage login.
+to know what to test, it appears we could look at last few stable releases for Chef Infra Server here: https://downloads.chef.io, and use those to test
+INSTALL_VERSION -> UPGRADE_VERSION.
 
 ### Getting the build to be released into current with a minor/major version bump
 
-- Create a new branch from the latest master branch ? <----
-- Update the contents of the file VERSION to the version to be released if minor version needs to be bumped rather than just the patch [what about major version?].
-For updating just the patch verion, [skip this section, and ?] refer the the section below on #Preparing for the release
+- Create a new branch from the latest master branch.
 - Update the release notes with the version, date and context.
   https://github.com/chef/chef-server/wiki/Pending-Release-Notes
-- Run all the tasks for 'Updating Ruby Gems' and 'Updating Erlang Dependencies' from dev-docs/FrequentTasks.md.
-- Make sure the omnibus build to be promoted is present in Artifactory's current channel.
-  (This is triggered by expeditor once the build and tests in buildkite go through ok once a commit is merged to master) <- confirm, reword.
-QUESTION: when/where does the merge to master happen? where is this step?
+- Run all the tasks for 'Updating Ruby Gems' from dev-docs/FrequentTasks.md (some of this might have already been done by dependabot).
+- Push branch, create PR.
+- Bump the release version:
+    - Apply the label Expeditor: Bump Version Minor or Expeditor: Bump Version Major to your PR to bump the version number of the release candidate.
+    - DOUBLE-CHECK the labels to confirm that they are correct.
+- Merge to master.
+- Make sure the omnibus build to be promoted is present in Artifactory's current channel (this should be placed there by expeditor after a commit is merged to master and build and tests in buildkite go through ok).
+Automatically upon a commit being merged to master, a build is kicked-off on the Chef / [chef/chef-server:master] omnibus/release pipeline.
+The release pipeline runs automatically on merge after expeditor bumps the version...]
+
 One approach is to enter the following into a bash shell, where _version_ is the version number of the new release:
 ```
 $ mixlib-install download chef-server -c current -a x86_64 -p ubuntu -l 16.04 -v <version>
 ```
 Starting download https://packages.chef.io/files/current/chef-server/14.1.0/ubuntu/16.04/chef-server-core_14.1.0-1_amd64.deb
-- Make sure the habitat builds are passing. [pipeline? label? and when/where is this build kicked off?] <-----
-    Chef / [chef/chef-server:master] habitat/build / master 
-Monitor the chef-server-notify slack channel for current progress ? <-----
+- Make sure the Habitat builds for master are passing.
+Chef / [chef/chef-server:master] habitat/build / master
+https://buildkite.com/chef/chef-chef-server-master-habitat-build
 
-[insert this info somewhere, if appropriate. these sentences aren't necessary supposed to go together:
-Automatically upon merge, a build is kicked-off on the Chef / [chef/chef-server:master] omnibus/release pipeline.
-The release pipeline runs automatically on merge after expeditor bumps the version...]
+Monitor the chef-server-notify slack channel for current progress ? <-----
 
 ### Testing the Release
 
-Every merge to chef-server master must be built, and this build (master branch?) must be tested with the full Umbrella automated integration test pipeline: https://buildkite.com/chef/chef-umbrella-master-chef-server-full.
+Every merge to chef-server master must be built, and this build must be tested with the full Umbrella automated integration test pipeline: https://buildkite.com/chef/chef-umbrella-master-chef-server-full.
 The integration test run for the tag being shipped must be successful.
 
 Step-by-step:
@@ -70,17 +77,20 @@ Step-by-step:
 - Select 'New Build'.
 - Leave 'Branch' set to 'master'.
 - Select 'Options' to expand the 'Environment Variables' field.
-- Enter `UPGRADE_VERSION=<build record>` into the 'Options | Environment Variables' field, where _build record_ is the version number string of the omnibus/adhoc build you wish to test (for example 13.1.64+20201234567890).
-CLARIFICATION: this step should just be performed on master? so delete the previous two 'Options' and 'UPGRADE_VERSION=' steps?
-- Optionally, fill-in the 'Message' field with something descriptive, for example the version number string of the build record.
+- Enter `INSTALL_VERSION=<version number>` into the 'Options | Environment Variables' field, where _version number_ is the stable  version number of the release you wish to test upgrading FROM (for example 14.0.65).
+- Enter `UPGRADE_VERSION=<version number>` into the 'Options | Environment Variables' field, where _version number_ is the current version number of the candidate you wish to release (for example 14.2.2).
+- Optionally, fill-in the 'Message' field with something descriptive.
 - Select 'Create Build'.
 
-Currently (02/21), the Umbrella pipeline does not perform a test login to Chef Manage, so this should be done manually by picking a representative AWS scenario and a representative Azure scenario:
+Currently (02/21), the Umbrella pipeline does not perform a test login to Chef Manage, so this should be done manually by picking representative AWS and Azure scenarios.
 
-- NOTE: NOT SURE IF THESE INSTRUCTIONS ARE CORRECT.
-question: is this done locally or in the cloud?
-if local, we'll need instructions for that.
-
+Typical scenario for AWS:
+- Enter the following into a bash shell from within the Umbrella repo:
+```
+$ cd umbrella/chef-server/scenarios/aws
+$ okta_aws --all
+$ PLATFORM=ubuntu-18.04 INSTALL_VERSION=14.2.2 UPGRADE_VERSION=14.2.2 SCENARIO=standalone-fresh-install ENABLE_ADDON_PUSH_JOBS=false ENABLE_GATHER_LOGS_TEST=false ENABLE_PEDANT_TEST=false ENABLE_PSQL_TEST=false ENABLE_SMOKE_TEST=false ENABLE_IPV6=true make apply
+```
 - Obtain the DNS name of the ephemeral machine by observing the output of the boot-up.  A sample output is shown below:
 ```
 null_resource.chef_server_config: Provisioning with 'remote-exec'...
@@ -96,13 +106,49 @@ null_resource.chef_server_config (remote-exec): Connected!
 null_resource.chef_server_config (remote-exec): echo -e '
 null_resource.chef_server_config (remote-exec): BEGIN INSTALL CHEF SERVER
 ```
-- Hit the server via `http://<hostname>` where hostname is the DNS name of the emphemeral machine obtained in the previous step.
+- Navigate to `http://<hostname>` via web browser where _hostname_ is the DNS name of the emphemeral machine obtained in the previous step.
 - Enter the username and password to test the login.  The username and password are stored in the following script: https://github.com/chef/chef-server/blob/master/terraform/common/files/add_user.sh.
 Currently (02/21) the username is janedoe and the password is abc123.
-
-[insert necessary (azure?) manual testing instructions here]
+- Verify that the login is successful.
+- Clean-up:
+```
+PLATFORM=ubuntu-18.04 INSTALL_VERSION=14.2.2 UPGRADE_VERSION=14.2.2 SCENARIO=standalone-fresh-install ENABLE_ADDON_PUSH_JOBS=false ENABLE_GATHER_LOGS_TEST=false ENABLE_PEDANT_TEST=false ENABLE_PSQL_TEST=false ENABLE_SMOKE_TEST=false ENABLE_IPV6=true make destroy
+```
+Typical scenario for Azure:
+- Enter the following into a bash shell from within the Umbrella repo:
+```
+$ cd umbrella/chef-server/scenarios/azure
+$ ARM_DEPT=Eng ARM_CONTACT=lbaker make create-resource-group
+$ PLATFORM=ubuntu-18.04 INSTALL_VERSION=14.2.2 UPGRADE_VERSION=14.2.2 SCENARIO=external-postgresql ENABLE_ADDON_PUSH_JOBS=false ENABLE_GATHER_LOGS_TEST=false ENABLE_PEDANT_TEST=false ENABLE_PSQL_TEST=false ENABLE_SMOKE_TEST=false ENABLE_IPV6=true make apply
+```
+- Perform the login process specified above for AWS.
+- Clean-up:
+```
+PLATFORM=ubuntu-18.04 INSTALL_VERSION=14.2.2 UPGRADE_VERSION=14.2.2 SCENARIO=external-postgresql ENABLE_ADDON_PUSH_JOBS=false ENABLE_GATHER_LOGS_TEST=false ENABLE_PEDANT_TEST=false ENABLE_PSQL_TEST=false ENABLE_SMOKE_TEST=false ENABLE_IPV6=true make destroy
+```
 
 Any failures must be fixed before shipping a release, unless they are "known failures" or expected. Note that no changes other than CHANGELOG/RELEASE_NOTES changes should land on master between testing and releasing since we typically tag HEAD of master. If something large does land on master, the release tag you create should point specifically at the build that you tested. The git SHA of the build you are testing can be found in /opt/opscode/version-manifest.json.
+
+[insert blurb about consulting:
+https://docs.google.com/spreadsheets/d/10LZszYuAIlrk1acy0GRhrZMd0YohLTQWmcNIdY6XuZU/edit#gid=0
+use chef.io account]
+
+### Informing everyone of a pending release
+
+- [ ] Announce your intention to for release to the following slack channels.
+pre-promote - some kind of status checklist (it's informal - come up with something).  post-promote - link to discourse announce.
+pre-promote - something like: We are planning to do a release of Chef Infra Server X.Y.X shortly. Details can be found at: https://github.com/chef/chef-server/wiki/Pending-Release-Notes .  We will post an update once the release is complete.
+    - Announce pre-promote
+        - #a2-release-coordinate
+        - #chef-server
+    - Announce post-promote  Copying a discourse post link to the channels below should suffice:
+https://discourse.chef.io/t/chef-infra-server-14-1-0-released/19616
+        - #a2-release-coordinate
+        - #chef-server
+        - #cft-announce (post-promote).
+
+(Per @PrajaktaPurohit - only for the post-release announce, Announce the intention for release in #a2-release-coordinate channel.
+The link to discourse post can be found after release like: https://discourse.chef.io/t/chef-infra-server-14-1-0-released/19616)
 
 ### Preparing for the Release
 
@@ -113,9 +159,18 @@ Any failures must be fixed before shipping a release, unless they are "known fai
 ### Building and Releasing the Release
 
 - [ ] Select a version from the `current` channel that you wish to promote to `stable`. Make sure that this version has gone through the upgrade testing.
-- [ ] Use expeditor to promote the build:
+- [ ] Use expeditor to promote the build.  The expeditor command is of the form:
+
+        /expeditor promote ORG/REPO:BRANCH VERSION
+
+In practice it will look like:
 
         /expeditor promote chef/chef-server:master VERSION
+
+Example:
+```
+/expeditor promote chef/chef-server:master 14.2.2
+```
 
   Please do this in the `#chef-server-notify` channel.  Once this is
   done, the release is available to the public via the APT and YUM
@@ -137,3 +192,17 @@ Any failures must be fixed before shipping a release, unless they are "known fai
   Policy and Processes -> Release Announcements and Security Alerts
 
 Chef Infra Server is now released.
+
+a sample release checklist in progress:
+
+RELEASE CHECKLIST
+- updated release notes and changelog                                          YES
+- version file updated                                                         YES 
+- omnibus build in current channel                                             YES
+- full umbrella pipeline green                                                 testing - https://buildkite.com/chef/chef-umbrella-master-chef-server-full/builds/24#8b278561-477a-4548-a070-4e312a87608c
+- manual login to chef-manage - AWS                                            YES
+- manual login to chef-manage - azure                                          PENDING
+- habitat build green                                                          PENDING
+- announce pending release via slack (#a2-release-coordinate and #chef-server) PENDING
+- do release                                                                   PENDING
+- announce post-promote (#a2-release-coordinate, #chef-server, #cft-announce)  PENDING
