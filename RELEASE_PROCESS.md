@@ -50,19 +50,19 @@ https://github.com/chef/chef-server/wiki/Pending-Release-Notes
 - Bump the release version:
     - Apply the label _Expeditor: Bump Version Minor_ or _Expeditor: Bump Version Major_ to your PR to bump the version number of the release candidate. [QUESTION: can BOTH labels be applied?]
     - DOUBLE-CHECK the labels to confirm that they are correct.
-- Merge to master.
-Additional context:  After a commit is merged to master, a build is automatically kicked-off on the Chef / [chef/chef-server:master] omnibus/release pipeline by expeditor after it bumps the version number.  After the build and tests in buildkite pass, expeditor should put a build artifact in Artifactory's current channel.
-- Make sure the omnibus build to be promoted is present in Artifactory's current channel.
+- Merge to master.  
+Additional context:  After a commit is merged to master, a build is automatically kicked-off on the Chef / [chef/chef-server:master] omnibus/release pipeline by expeditor after it bumps the version number.  After the build and tests in buildkite pass, expeditor should put the build artifact in Artifactory's current channel.
+- Make sure the omnibus build to be promoted is present in Artifactory's current channel.  
 One approach is to enter the following into a bash shell, where _version_ is the version number of the new release:
 ```
 $ mixlib-install download chef-server -c current -a x86_64 -p ubuntu -l 16.04 -v <version>
-```
 Starting download https://packages.chef.io/files/current/chef-server/14.1.0/ubuntu/16.04/chef-server-core_14.1.0-1_amd64.deb
-- Make sure the Habitat builds for master are passing.
-Chef / [chef/chef-server:master] habitat/build / master
+```
+- Make sure the Habitat builds for master are passing.  
+Chef / [chef/chef-server:master] habitat/build / master  
 https://buildkite.com/chef/chef-chef-server-master-habitat-build
 
-Monitor the chef-server-notify slack channel for current progress. [QUESTION: where does this sentence go, i.e. at what step do we monitor progress?  During build?]
+Monitor the chef-server-notify slack channel for current progress. [QUESTION: where does this sentence go, i.e. at what step do we monitor progress?  During the build?]
 
 ### Testing the Release
 
@@ -83,11 +83,11 @@ Step-by-step:
 Currently (02/21), the Umbrella pipeline does not perform a test login to Chef Manage, so this should be done manually by picking representative AWS and Azure scenarios.
 
 Typical scenario for AWS:
-- Enter the following into a bash shell from within the Umbrella repo:
+- Enter the following into a bash shell from within the Umbrella repo, where _version_ is the version number of the release candidate you are testing:
 ```
 $ cd umbrella/chef-server/scenarios/aws
 $ okta_aws --all
-$ PLATFORM=ubuntu-18.04 INSTALL_VERSION=14.2.2 UPGRADE_VERSION=14.2.2 SCENARIO=standalone-fresh-install ENABLE_ADDON_PUSH_JOBS=false ENABLE_GATHER_LOGS_TEST=false ENABLE_PEDANT_TEST=false ENABLE_PSQL_TEST=false ENABLE_SMOKE_TEST=false ENABLE_IPV6=true make apply
+$ PLATFORM=ubuntu-18.04 INSTALL_VERSION=<version> UPGRADE_VERSION=<version> SCENARIO=standalone-fresh-install ENABLE_ADDON_PUSH_JOBS=false ENABLE_GATHER_LOGS_TEST=false ENABLE_PEDANT_TEST=false ENABLE_PSQL_TEST=false ENABLE_SMOKE_TEST=false ENABLE_IPV6=true make apply
 ```
 - Obtain the DNS name of the ephemeral machine by observing the output of the boot-up.  A sample output is shown below:
 ```
@@ -105,15 +105,16 @@ null_resource.chef_server_config (remote-exec): echo -e '
 null_resource.chef_server_config (remote-exec): BEGIN INSTALL CHEF SERVER
 ```
 - Navigate to `http://<hostname>` via web browser where _hostname_ is the DNS name of the emphemeral machine obtained in the previous step.
-- Enter the username and password to test the login.  The username and password are stored in the following script: https://github.com/chef/chef-server/blob/master/terraform/common/files/add_user.sh.
+- Enter the username and password to test the login.  The username and password are stored in the following script:  
+https://github.com/chef/chef-server/blob/master/terraform/common/files/add_user.sh.  
 Currently (02/21) the username is janedoe and the password is abc123.
 - Verify that the login is successful.
 - Clean-up:
 ```
-PLATFORM=ubuntu-18.04 INSTALL_VERSION=14.2.2 UPGRADE_VERSION=14.2.2 SCENARIO=standalone-fresh-install ENABLE_ADDON_PUSH_JOBS=false ENABLE_GATHER_LOGS_TEST=false ENABLE_PEDANT_TEST=false ENABLE_PSQL_TEST=false ENABLE_SMOKE_TEST=false ENABLE_IPV6=true make destroy
+PLATFORM=ubuntu-18.04 INSTALL_VERSION=<version> UPGRADE_VERSION=<version> SCENARIO=standalone-fresh-install ENABLE_ADDON_PUSH_JOBS=false ENABLE_GATHER_LOGS_TEST=false ENABLE_PEDANT_TEST=false ENABLE_PSQL_TEST=false ENABLE_SMOKE_TEST=false ENABLE_IPV6=true make destroy
 ```
 Typical scenario for Azure:
-- Enter the following into a bash shell from within the Umbrella repo:
+- Enter the following into a bash shell from within the Umbrella repo, where _version_ is the version number of the release candidate you are testing:
 ```
 $ cd umbrella/chef-server/scenarios/azure
 $ ARM_DEPT=Eng ARM_CONTACT=lbaker make create-resource-group
