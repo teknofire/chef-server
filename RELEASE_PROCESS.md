@@ -135,8 +135,7 @@ use chef.io account]
 
 ### Informing everyone of a pending release
 
-- [ ] Announce your intention to for release to the following slack channels.
-pre-promote - some kind of status checklist (it's informal - come up with something).  post-promote - link to discourse announce.
+- [ ] Announce your intention to release to the following slack channels.
 pre-promote - something like: We are planning to do a release of Chef Infra Server X.Y.X shortly. Details can be found at: https://github.com/chef/chef-server/wiki/Pending-Release-Notes .  We will post an update once the release is complete.
     - Announce pre-promote
         - #a2-release-coordinate
@@ -145,7 +144,7 @@ pre-promote - something like: We are planning to do a release of Chef Infra Serv
 https://discourse.chef.io/t/chef-infra-server-14-1-0-released/19616
         - #a2-release-coordinate
         - #chef-server
-        - #cft-announce (post-promote).
+        - #cft-announce
 
 (Per @PrajaktaPurohit - only for the post-release announce, Announce the intention for release in #a2-release-coordinate channel.
 The link to discourse post can be found after release like: https://discourse.chef.io/t/chef-infra-server-14-1-0-released/19616)
