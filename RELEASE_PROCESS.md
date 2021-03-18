@@ -118,15 +118,15 @@ Typical scenario for Azure:
 ```
 $ cd umbrella/chef-server/scenarios/azure
 $ ARM_DEPT=Eng ARM_CONTACT=lbaker make create-resource-group
-$ PLATFORM=ubuntu-18.04 INSTALL_VERSION=14.2.2 UPGRADE_VERSION=14.2.2 SCENARIO=external-postgresql ENABLE_ADDON_PUSH_JOBS=false ENABLE_GATHER_LOGS_TEST=false ENABLE_PEDANT_TEST=false ENABLE_PSQL_TEST=false ENABLE_SMOKE_TEST=false ENABLE_IPV6=true make apply
+$ PLATFORM=ubuntu-18.04 INSTALL_VERSION=<version> UPGRADE_VERSION=<version> SCENARIO=external-postgresql ENABLE_ADDON_PUSH_JOBS=false ENABLE_GATHER_LOGS_TEST=false ENABLE_PEDANT_TEST=false ENABLE_PSQL_TEST=false ENABLE_SMOKE_TEST=false ENABLE_IPV6=true make apply
 ```
 - Perform the login process specified above for AWS.
 - Clean-up:
 ```
-PLATFORM=ubuntu-18.04 INSTALL_VERSION=14.2.2 UPGRADE_VERSION=14.2.2 SCENARIO=external-postgresql ENABLE_ADDON_PUSH_JOBS=false ENABLE_GATHER_LOGS_TEST=false ENABLE_PEDANT_TEST=false ENABLE_PSQL_TEST=false ENABLE_SMOKE_TEST=false ENABLE_IPV6=true make destroy
+PLATFORM=ubuntu-18.04 INSTALL_VERSION=<version> UPGRADE_VERSION=<version> SCENARIO=external-postgresql ENABLE_ADDON_PUSH_JOBS=false ENABLE_GATHER_LOGS_TEST=false ENABLE_PEDANT_TEST=false ENABLE_PSQL_TEST=false ENABLE_SMOKE_TEST=false ENABLE_IPV6=true make destroy
 ```
 
-Any failures must be fixed before shipping a release, unless they are "known failures" or expected. Note that no changes other than CHANGELOG/RELEASE_NOTES changes should land on master between testing and releasing since we typically tag HEAD of master. If something large does land on master, the release tag you create should point specifically at the build that you tested. The git SHA of the build you are testing can be found in /opt/opscode/version-manifest.json.
+Any failures must be fixed before shipping a release, unless they are "known failures" or expected [INSERT PROCESS FOR KNOWN FAILURES HERE]. Note that no changes other than CHANGELOG/RELEASE_NOTES changes should land on master between testing and releasing since we typically tag HEAD of master. If something large does land on master, the release tag you create should point specifically at the build that you tested. The git SHA of the build you are testing can be found in /opt/opscode/version-manifest.json.
 
 [insert blurb about consulting:
 https://docs.google.com/spreadsheets/d/10LZszYuAIlrk1acy0GRhrZMd0YohLTQWmcNIdY6XuZU/edit#gid=0
