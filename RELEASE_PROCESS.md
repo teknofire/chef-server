@@ -43,8 +43,8 @@ INSTALL_VERSION -> UPGRADE_VERSION.
 ### Getting the build to be released into current with a minor/major version bump
 
 - Create a new branch from the latest master branch. [QUESTION: or do we simply push commits directly to master?]
-- Update the release notes with the version, date and context.
-  https://github.com/chef/chef-server/wiki/Pending-Release-Notes
+- Update the release notes with the version, date and context.  
+https://github.com/chef/chef-server/wiki/Pending-Release-Notes
 - Run all the tasks for 'Updating Ruby Gems' from dev-docs/FrequentTasks.md.  Note that some of this might have already been done by dependabot.
 - Push branch, create PR.
 - Bump the release version:
