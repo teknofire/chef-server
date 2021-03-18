@@ -109,6 +109,9 @@ null_resource.chef_server_config (remote-exec): BEGIN INSTALL CHEF SERVER
 https://github.com/chef/chef-server/blob/master/terraform/common/files/add_user.sh.  
 Currently (02/21) the username is janedoe and the password is abc123.
 - Verify that the login is successful.
+- Navigate to `http://<hostname>/id` via web browser where _hostname_ is the DNS name of the emphemeral machine obtained in the previous step.
+- Login with the same user/password as the previous login step above.
+- Select the 'signed in as <username>' link in the upper-left. Confirm that the email is grayed-out.
 - Clean-up:
 ```
 PLATFORM=ubuntu-18.04 INSTALL_VERSION=<version> UPGRADE_VERSION=<version> SCENARIO=standalone-fresh-install ENABLE_ADDON_PUSH_JOBS=false ENABLE_GATHER_LOGS_TEST=false ENABLE_PEDANT_TEST=false ENABLE_PSQL_TEST=false ENABLE_SMOKE_TEST=false ENABLE_IPV6=true make destroy
@@ -120,7 +123,7 @@ $ cd umbrella/chef-server/scenarios/azure
 $ ARM_DEPT=Eng ARM_CONTACT=lbaker make create-resource-group
 $ PLATFORM=ubuntu-18.04 INSTALL_VERSION=<version> UPGRADE_VERSION=<version> SCENARIO=external-postgresql ENABLE_ADDON_PUSH_JOBS=false ENABLE_GATHER_LOGS_TEST=false ENABLE_PEDANT_TEST=false ENABLE_PSQL_TEST=false ENABLE_SMOKE_TEST=false ENABLE_IPV6=true make apply
 ```
-- Perform the login process specified above for AWS.
+- Perform the same login process specified above for AWS.
 - Clean-up:
 ```
 PLATFORM=ubuntu-18.04 INSTALL_VERSION=<version> UPGRADE_VERSION=<version> SCENARIO=external-postgresql ENABLE_ADDON_PUSH_JOBS=false ENABLE_GATHER_LOGS_TEST=false ENABLE_PEDANT_TEST=false ENABLE_PSQL_TEST=false ENABLE_SMOKE_TEST=false ENABLE_IPV6=true make destroy
@@ -134,12 +137,14 @@ use chef.io account]
 
 ### Informing everyone of a pending release
 
-- [ ] Announce your intention to release to the following slack channels.
-pre-promote - something like: We are planning to do a release of Chef Infra Server X.Y.X shortly. Details can be found at: https://github.com/chef/chef-server/wiki/Pending-Release-Notes .  We will post an update once the release is complete.
+- [ ] Announce your intention to release to the following slack channels. Some announcements are done pre-promote.  Some are done post-promote.  
     - Announce pre-promote
+Sample pre-promote announcement:  
+We are planning to do a release of Chef Infra Server X.Y.X shortly. Details can be found at: https://github.com/chef/chef-server/wiki/Pending-Release-Notes
         - #a2-release-coordinate
         - #chef-server
-    - Announce post-promote  Copying a discourse post link to the channels below should suffice:
+    - Announce post-promote  
+Copying a discourse post link to the channels below should suffice:
 https://discourse.chef.io/t/chef-infra-server-14-1-0-released/19616
         - #a2-release-coordinate
         - #chef-server
