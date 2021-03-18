@@ -42,19 +42,17 @@ INSTALL_VERSION -> UPGRADE_VERSION.
 
 ### Getting the build to be released into current with a minor/major version bump
 
-- Create a new branch from the latest master branch.
+- Create a new branch from the latest master branch. [QUESTION: or do we simply push commits directly to master?]
 - Update the release notes with the version, date and context.
   https://github.com/chef/chef-server/wiki/Pending-Release-Notes
-- Run all the tasks for 'Updating Ruby Gems' from dev-docs/FrequentTasks.md (some of this might have already been done by dependabot).
+- Run all the tasks for 'Updating Ruby Gems' from dev-docs/FrequentTasks.md.  Note that some of this might have already been done by dependabot.
 - Push branch, create PR.
 - Bump the release version:
-    - Apply the label Expeditor: Bump Version Minor or Expeditor: Bump Version Major to your PR to bump the version number of the release candidate.
+    - Apply the label _Expeditor: Bump Version Minor_ or _Expeditor: Bump Version Major_ to your PR to bump the version number of the release candidate. [QUESTION: can BOTH labels be applied?]
     - DOUBLE-CHECK the labels to confirm that they are correct.
 - Merge to master.
-- Make sure the omnibus build to be promoted is present in Artifactory's current channel (this should be placed there by expeditor after a commit is merged to master and build and tests in buildkite go through ok).
-Automatically upon a commit being merged to master, a build is kicked-off on the Chef / [chef/chef-server:master] omnibus/release pipeline.
-The release pipeline runs automatically on merge after expeditor bumps the version...]
-
+Additional context:  After a commit is merged to master, a build is automatically kicked-off on the Chef / [chef/chef-server:master] omnibus/release pipeline by expeditor after it bumps the version number.  After the build and tests in buildkite pass, expeditor should put a build artifact in Artifactory's current channel.
+- Make sure the omnibus build to be promoted is present in Artifactory's current channel.
 One approach is to enter the following into a bash shell, where _version_ is the version number of the new release:
 ```
 $ mixlib-install download chef-server -c current -a x86_64 -p ubuntu -l 16.04 -v <version>
@@ -64,11 +62,11 @@ Starting download https://packages.chef.io/files/current/chef-server/14.1.0/ubun
 Chef / [chef/chef-server:master] habitat/build / master
 https://buildkite.com/chef/chef-chef-server-master-habitat-build
 
-Monitor the chef-server-notify slack channel for current progress ? <-----
+Monitor the chef-server-notify slack channel for current progress. [QUESTION: where does this sentence go, i.e. at what step do we monitor progress?  During build?]
 
 ### Testing the Release
 
-Every merge to chef-server master must be built, and this build must be tested with the full Umbrella automated integration test pipeline: https://buildkite.com/chef/chef-umbrella-master-chef-server-full.
+Every merge to chef-server master must be built, and this build must be tested with the full Umbrella automated integration test pipeline at https://buildkite.com/chef/chef-umbrella-master-chef-server-full.
 The integration test run for the tag being shipped must be successful.
 
 Step-by-step:
@@ -78,7 +76,7 @@ Step-by-step:
 - Leave 'Branch' set to 'master'.
 - Select 'Options' to expand the 'Environment Variables' field.
 - Enter `INSTALL_VERSION=<version number>` into the 'Options | Environment Variables' field, where _version number_ is the stable  version number of the release you wish to test upgrading FROM (for example 14.0.65).
-- Enter `UPGRADE_VERSION=<version number>` into the 'Options | Environment Variables' field, where _version number_ is the current version number of the candidate you wish to release (for example 14.2.2).
+- Enter `UPGRADE_VERSION=<version number>` into the 'Options | Environment Variables' field, where _version number_ is the current version number of the release candidate you wish to test upgrading TO (for example 14.2.2).
 - Optionally, fill-in the 'Message' field with something descriptive.
 - Select 'Create Build'.
 
