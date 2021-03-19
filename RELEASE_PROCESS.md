@@ -135,7 +135,7 @@ PLATFORM=ubuntu-18.04 INSTALL_VERSION=<version> UPGRADE_VERSION=<version> SCENAR
 ```
 
 Any failures must be fixed before shipping a release, unless they are "known failures" or expected. A document at an unknown state of updatedness tracking known failures can be found at:  
-https://docs.google.com/spreadsheets/d/10LZszYuAIlrk1acy0GRhrZMd0YohLTQWmcNIdY6XuZU/edit#gid=0
+https://docs.google.com/spreadsheets/d/10LZszYuAIlrk1acy0GRhrZMd0YohLTQWmcNIdY6XuZU/edit#gid=0  
 Use chef.io account credentials to access it.
 Note that no changes other than CHANGELOG/RELEASE_NOTES changes should land on master between testing and releasing since we typically tag HEAD of master. If something large does land on master, the release tag you create should point specifically at the build that you tested. The git SHA of the build you are testing can be found in /opt/opscode/version-manifest.json.
 
@@ -144,13 +144,13 @@ Note that no changes other than CHANGELOG/RELEASE_NOTES changes should land on m
 - [ ] Announce your intention to release to the following slack channels. Some announcements are done pre-promote.  Some are done post-promote.  
     - Announce pre-promote
         - #a2-release-coordinate
-        - #chef-server
+        - #chef-server  
 Sample pre-promote announcement:  
 We are planning to do a release of Chef Infra Server X.Y.Z shortly. Details can be found at: https://github.com/chef/chef-server/wiki/Pending-Release-Notes
     - Announce post-promote  
         - #a2-release-coordinate
         - #chef-server
-        - #cft-announce
+        - #cft-announce  
 Copying a discourse link to the post-promote channels should suffice.  You can find the link here.  Note that this is NOT the link, this is the link where you can find the link:
 https://discourse.chef.io/c/chef-release/9
 
@@ -180,6 +180,7 @@ Example:
   done, the release is available to the public via the APT and YUM
   repositories and downloads.chef.io.
 
+QUESTION: Is the following still relevant? --------------------------  
 - [ ] Chef employees should already know a release is coming; however, as a
   courtesy, drop a message in the #cft-announce slack channel that the release
   is coming. Provide the release number and any highlights of the release.
@@ -193,7 +194,8 @@ Example:
   release, it should also be published to the Chef Security Announcements
   category.* Full details on the policy of making release announcements on
   Discourse can be found on the wiki under the Engineering section ->
-  Policy and Processes -> Release Announcements and Security Alerts
+  Policy and Processes -> Release Announcements and Security Alerts  
+--------------------------
 
 Chef Infra Server is now released.
 
