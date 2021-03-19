@@ -140,7 +140,7 @@ use chef.io account]
 - [ ] Announce your intention to release to the following slack channels. Some announcements are done pre-promote.  Some are done post-promote.  
     - Announce pre-promote
 Sample pre-promote announcement:  
-We are planning to do a release of Chef Infra Server X.Y.X shortly. Details can be found at: https://github.com/chef/chef-server/wiki/Pending-Release-Notes
+We are planning to do a release of Chef Infra Server X.Y.Z shortly. Details can be found at: https://github.com/chef/chef-server/wiki/Pending-Release-Notes
         - #a2-release-coordinate
         - #chef-server
     - Announce post-promote  
