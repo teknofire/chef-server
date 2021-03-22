@@ -27,28 +27,15 @@ In order to release, you will need the following accounts/permissions:
 
 ## THE PROCESS
 
-@Prajakta Purohit
-    the first thing to do would be make sure you have the umbrella pipelines running
-    10:21
-    we already have 14.1.0 -> 14.2.2
-    10:22
-    I think you need to run 14.0.65 -> 14.2.2
-    10:22
-    in the full pipeline.
-    10:22
-    and test manage login.
-to know what to test, it appears we could look at last few stable releases for Chef Infra Server here: https://downloads.chef.io, and use those to test
-INSTALL_VERSION -> UPGRADE_VERSION.
-
 ### Getting the build to be released into current with a minor/major version bump
 
 - Create a new branch from the latest master branch. [QUESTION: or do we simply push a commit directly to master?]
 - Update the release notes with the version, date and context.  
-https://github.com/chef/chef-server/wiki/Pending-Release-Notes
+  https://github.com/chef/chef-server/wiki/Pending-Release-Notes
 - Run all the tasks for 'Updating Ruby Gems' from dev-docs/FrequentTasks.md.  Note that some of this might have already been done by dependabot.
 - Push branch, create PR.
 - Bump the release version:
-    - Apply the label _Expeditor: Bump Version Minor_ or _Expeditor: Bump Version Major_ to your PR to bump the version number of the release candidate. [QUESTION: can BOTH labels be applied?]
+    - Apply the label _Expeditor: Bump Version Minor_ or _Expeditor: Bump Version Major_ to your PR to bump the version number of the release candidate, as applicable. [QUESTION: can BOTH labels be applied?]
     - DOUBLE-CHECK the labels to confirm that they are correct.
 - Merge to master.  
 Additional context:  After a commit is merged to master, a build is automatically kicked-off on the Chef / [chef/chef-server:master] omnibus/release pipeline by expeditor after it bumps the version number.  After the build and tests in buildkite pass, expeditor should put the build artifact in Artifactory's current channel.
@@ -59,8 +46,8 @@ $ mixlib-install download chef-server -c current -a x86_64 -p ubuntu -l 16.04 -v
 Starting download https://packages.chef.io/files/current/chef-server/14.1.0/ubuntu/16.04/chef-server-core_14.1.0-1_amd64.deb
 ```
 - Make sure the Habitat builds for master are passing.  
-Chef / [chef/chef-server:master] habitat/build / master  
-https://buildkite.com/chef/chef-chef-server-master-habitat-build
+  Chef / [chef/chef-server:master] habitat/build / master  
+  https://buildkite.com/chef/chef-chef-server-master-habitat-build
 
 Monitor the chef-server-notify slack channel for current progress. [QUESTION: where does this sentence go, i.e. at what step do we monitor progress?  During the build?]
 
@@ -68,6 +55,15 @@ Monitor the chef-server-notify slack channel for current progress. [QUESTION: wh
 
 Every merge to chef-server master must be built, and this build must be tested with the full Umbrella automated integration test pipeline at https://buildkite.com/chef/chef-umbrella-master-chef-server-full.
 The integration test run for the tag being shipped must be successful.
+
+Any Chef Infra Server release after 12.17.35 [QUESTION: inclusive of?] should be able to upgrade directly to the new release.  Older releases were already tested during previous release processes, but make sure to test the stable release being replaced by this new release, and...  
+[QUESTION: what else?  last release we tested the following.  explain?
+14.1.0  -> 14.2.2
+14.0.65 -> 14.2.2
+].
+
+Past stable releases:
+https://downloads.chef.io
 
 Step-by-step:
 
@@ -177,7 +173,7 @@ Example:
   courtesy, drop a message in the #cft-announce slack channel that the release
   is coming. Provide the release number and any highlights of the release.
 
-Announce post-promote to the following channels:
+Announce the release post-promote to the following channels:
     - #a2-release-coordinate
     - #chef-server
     - #cft-announce  
