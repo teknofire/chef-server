@@ -53,7 +53,6 @@ pipeline.
 The verify pipeline builds are kicked-off automatically by dependabot, but it
 is necessary to verify that they pass.
 
-
 Updates needing verify + adhoc builds:
 - omnibus/Gemfile.lock
 - oc-chef-pedant/Gemfile.lock
