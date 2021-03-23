@@ -35,7 +35,7 @@ In order to release, you will need the following accounts/permissions:
 - Run all the tasks for 'Updating Ruby Gems' from dev-docs/FrequentTasks.md.  Note that some of this might have already been done by dependabot.
 - Push branch, create PR.
 - Bump the release version:
-    - Apply the label _Expeditor: Bump Version Minor_ or _Expeditor: Bump Version Major_ to your PR to bump the version number of the release candidate, as applicable. [QUESTION: can BOTH labels be applied?]
+    - Apply the label _Expeditor: Bump Version Minor_ or _Expeditor: Bump Version Major_ to your PR to bump the version number of the release candidate, as applicable. [QUESTION: can BOTH labels be applied at once?]
     - DOUBLE-CHECK the labels to confirm that they are correct.
 - Merge to master.  
 Additional context:  After a commit is merged to master, a build is automatically kicked-off on the Chef / [chef/chef-server:master] omnibus/release pipeline by expeditor after it bumps the version number.  After the build and tests in buildkite pass, expeditor should put the build artifact in Artifactory's current channel.
@@ -57,7 +57,7 @@ Every merge to chef-server master must be built, and this build must be tested w
 The integration test run for the tag being shipped must be successful.
 
 Any Chef Infra Server release after 12.17.35 [QUESTION: inclusive of?] should be able to upgrade directly to the new release.  Older releases were already tested during previous release processes, but make sure to test the stable release being replaced by this new release, and...  
-[QUESTION: what else?  last release we tested the following.  explain?
+[...anything else?  last release we tested the following:
 14.1.0  -> 14.2.2
 14.0.65 -> 14.2.2
 ].
@@ -65,7 +65,7 @@ Any Chef Infra Server release after 12.17.35 [QUESTION: inclusive of?] should be
 Past stable releases:
 https://downloads.chef.io
 
-Step-by-step:
+Umbrella Testing Step-by-Step:
 
 - Navigate your web browser to https://buildkite.com/chef/chef-umbrella-master-chef-server
 - Select 'New Build'.
