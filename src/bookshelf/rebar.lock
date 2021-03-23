@@ -34,7 +34,7 @@
        {ref,"131e660ee39254a58b75075e07dfd742f445bfce"}},
   0},
  {<<"erlware_commons">>,
-  {git,"https://github.com/chef/erlware_commons.git",
+  {git,"git://github.com/chef/erlware_commons.git",
        {ref,"20c611d8c457edfc84a915cf1026f22980a83e00"}},
   0},
  {<<"fs">>,{pkg,<<"fs">>,<<"6.1.1">>},1},
