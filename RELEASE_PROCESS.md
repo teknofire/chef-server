@@ -135,7 +135,7 @@ https://docs.google.com/spreadsheets/d/10LZszYuAIlrk1acy0GRhrZMd0YohLTQWmcNIdY6X
 Use chef.io account credentials to access it.
 Note that no changes other than CHANGELOG/RELEASE_NOTES changes should land on master between testing and releasing since we typically tag HEAD of master. If something large does land on master, the release tag you create should point specifically at the build that you tested. The git SHA of the build you are testing can be found in /opt/opscode/version-manifest.json.
 
-### Informing everyone of a pending release
+### Informing everyone of a pending release pre-promote
 
 - [ ] Announce your intention to release to the following slack channels  
     - #a2-release-coordinate
@@ -173,11 +173,11 @@ Example:
   courtesy, drop a message in the #cft-announce slack channel that the release
   is coming. Provide the release number and any highlights of the release.
 
-Announce the release post-promote to the following channels:
+### Announce the release post-promote to the following channels:
     - #a2-release-coordinate
     - #chef-server
     - #cft-announce  
-Copying a discourse link to the post-promote channels should suffice.  You can find the link here.  Note that this is NOT the link, this is the link where you can find the link:
+Copying/pasting a discourse link to the post-promote channels should suffice.  You can find the link here.  Note that this is NOT the link to copy/paste, this is a link where you can find the link to copy/paste:  
 https://discourse.chef.io/c/chef-release/9
 
 - [ ] Write and then publish a Discourse post on https://discourse.chef.io
