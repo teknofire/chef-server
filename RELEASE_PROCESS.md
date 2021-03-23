@@ -120,7 +120,7 @@ PLATFORM=ubuntu-18.04 INSTALL_VERSION=<version> UPGRADE_VERSION=<version> SCENAR
 Typical scenario for Azure, where _version_ is the version number of the release candidate you are testing:
 ```
 $ cd umbrella/chef-server/scenarios/azure
-$ ARM_DEPT=Eng ARM_CONTACT=lbaker make create-resource-group
+$ ARM_DEPT=Eng ARM_CONTACT=your_login_here make create-resource-group
 ...
 $ PLATFORM=ubuntu-18.04 INSTALL_VERSION=<version> UPGRADE_VERSION=<version> SCENARIO=external-postgresql ENABLE_ADDON_PUSH_JOBS=false ENABLE_GATHER_LOGS_TEST=false ENABLE_PEDANT_TEST=false ENABLE_PSQL_TEST=false ENABLE_SMOKE_TEST=false ENABLE_IPV6=true make apply
 ```
