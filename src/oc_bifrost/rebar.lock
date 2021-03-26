@@ -9,7 +9,7 @@
   0},
  {<<"ej">>,
   {git,"git://github.com/chef/ej.git",
-       {ref,"85bbf475ec533447d244be50f7f450f41cbc1adf"}},
+       {branch,"master"}},
   0},
  {<<"envy">>,
   {git,"git://github.com/manderson26/envy.git",
