@@ -92,7 +92,7 @@ GEM
       aws-sigv4 (~> 1.1)
     aws-sigv4 (1.2.4)
       aws-eventstream (~> 1, >= 1.0.2)
-    bcrypt (3.1.16)
+    bcrypt (3.1.18)
     better_errors (2.9.1)
       coderay (>= 1.0.0)
       erubi (>= 1.0.0)
@@ -552,7 +552,7 @@ GEM
       rack
       unicorn
     uuidtools (2.2.0)
-    veil (0.3.5)
+    veil (0.3.11)
       bcrypt (~> 3.1)
       pbkdf2
     webrick (1.7.0)
@@ -625,7 +625,7 @@ DEPENDENCIES
   turbolinks (~> 5)
   uglifier (~> 4.2)
   unicorn-rails (~> 2.2, >= 2.2.1)
-  veil (~> 0.3.5)
+  veil (~> 0.3.11)
 
 BUNDLED WITH
    2.2.23
